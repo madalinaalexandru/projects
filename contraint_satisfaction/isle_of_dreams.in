@@ -1,0 +1,155 @@
+formulas(assumptions).
+	%everyone is either diurnal or nocturnal	
+	diurnal(x) | nocturnal(x).
+	diurnal(x) <-> -nocturnal(x).
+	noctural(x) <-> -diurnal(x).
+
+	%everyone is either awake or asleep
+	awake(x) | asleep(x).
+	awake(x) <-> -asleep(x).
+	asleep(x) <-> -awake(x). 
+
+	%1. "one of the inhabitants believed that he was of the diurnal type."
+	diurnal(i1) & awake(i1) -> diurnal(i1).
+	nocturnal(i1) & awake(i1) -> nocturnal(i1).
+	diurnal(i1) & asleep(i1) -> nocturnal(i1).
+	nocturnal(i1) & asleep(i1) -> diurnal(i1).
+
+	%2. "one of the natives believed he was asleep at the time."
+	nocturnal(i2) & asleep(i2) -> asleep(i2).
+	nocturnal(i2) & awake(i2) -> awake(i2).
+	diurnal(i2) & awake(i2) -> asleep(i2).
+	diurnal(i2) & asleep(i2) -> awake(i2).
+
+	%4. "an inhabitant believed that she was either asleep or of the nocturnal type, or both."
+	nocturnal(i3) & asleep(i3) -> asleep(i3) | nocturnal(i3).
+	diurnal(i3) & awake(i3) -> asleep(i3) | nocturnal(i3).
+	nocturnal(i3) & awake(i3) -> awake(i3) & diurnal(i3).
+	diurnal(i3) & asleep(i3) -> awake(i3) & diurnal(i3).
+
+	%5. "an inhabitant believed that he was both asleep and diurnal."
+	nocturnal(i4) & asleep(i4) -> asleep(i4) & diurnal(i4).
+	diurnal(i4) & awake(i4) -> asleep(i4) & diurnal(i4).
+	nocturnal(i4) & awake(i4) -> awake(i4) | nocturnal(i4).
+	diurnal(i4) & asleep(i4) -> awake(i4) | nocturnal(i4).
+
+	%6. "Mr. Kulp believed that he and his wife were both nocturnal. (...) Mrs. Kulp believed that they
+%were not both nocturnal. (...) one of them was awake and one of them was asleep at the time."
+	nocturnal(mr_kulp) & asleep(mr_kulp) -> nocturnal(mr_kulp) & nocturnal(mrs_kulp).
+	diurnal(mr_kulp) & awake(mr_kulp) -> nocturnal(mr_kulp) & nocturnal(mrs_kulp).
+	nocturnal(mr_kulp) & awake(mr_kulp) -> diurnal(mr_kulp) | diurnal(mrs_kulp).
+	diurnal(mr_kulp) & asleep(mr_kulp) -> diurnal(mr_kulp) | diurnal(mrs_kulp).
+	
+	nocturnal(mrs_kulp) & asleep(mrs_kulp) -> (nocturnal(mr_kulp) & diurnal(mrs_kulp)) | (nocturnal(mrs_kulp) & diurnal(mr_kulp)) | (diurnal(mr_kulp) & diurnal(mrs_kulp)).
+	diurnal(mrs_kulp) & awake(mrs_kulp) -> (nocturnal(mr_kulp) & diurnal(mrs_kulp)) | (nocturnal(mrs_kulp) & diurnal(mr_kulp)) | (diurnal(mr_kulp) & diurnal(mrs_kulp)).
+	nocturnal(mrs_kulp) & awake(mrs_kulp) -> nocturnal(mr_kulp) & nocturnal(mrs_kulp).
+	diurnal(mrs_kulp) & asleep(mrs_kulp) -> nocturnal(mr_kulp) & nocturnal(mrs_kulp).
+
+	(awake(mrs_kulp) & asleep(mr_kulp)) | (awake(mr_kulp) & asleep(mrs_kulp)).
+
+	%7. "One of them is nocturnal and the other is diurnal. (...) the wife believed they were either both asleep or both awake. (...) the husband believed that they were neither both asleep nor both awake."
+	nocturnal(mr_byron) & asleep(mr_byron) -> (asleep(mrs_byron) & awake(mr_byron)) | (awake(mrs_byron) & asleep(mr_byron)).
+	diurnal(mr_byron) & awake(mr_byron) -> (asleep(mrs_byron) & awake(mr_byron)) | (awake(mrs_byron) & asleep(mr_byron)).
+	nocturnal(mr_byron) & awake(mr_byron) -> (asleep(mrs_byron) & asleep(mr_byron)) | (awake(mrs_byron) & awake(mr_byron)).
+	diurnal(mr_byron) & asleep(mr_byron) -> (asleep(mrs_byron) & asleep(mr_byron)) | (awake(mrs_byron) & awake(mr_byron)).
+
+	nocturnal(mrs_byron) & asleep(mrs_byron) -> (asleep(mrs_byron) & asleep(mr_byron)) | (awake(mrs_byron) & awake(mr_byron)).
+	diurnal(mrs_byron) & awake(mrs_byron) -> (asleep(mrs_byron) & asleep(mr_byron)) | (awake(mrs_byron) & awake(mr_byron)).
+	nocturnal(mrs_byron) & awake(mrs_byron) -> (asleep(mrs_byron) & awake(mr_byron)) | (awake(mrs_byron) & asleep(mr_byron)).
+	diurnal(mrs_byron) & asleep(mrs_byron) -> (asleep(mrs_byron) & awake(mr_byron)) | (awake(mrs_byron) & asleep(mr_byron)).
+
+	(diurnal(mr_byron) & nocturnal(mrs_byron)) | (diurnal(mrs_byron) & nocturnal(mr_byron)).
+
+	%8. "Edward believed amazingly that he and his sister Elaine were both nocturnal, and at the same time that he was not nocturnal.
+	nocturnal(edward) & asleep(edward) -> (nocturnal(edward) & nocturnal(elaine)) & (diurnal(edward)).
+	diurnal(edward) & awake(edward) -> (nocturnal(edward) & nocturnal(elaine)) & (diurnal(edward)).
+	nocturnal(edward) & awake(edward) -> (diurnal(edward) | diurnal(elaine)) & (nocturnal(edward)).
+	diurnal(edward) & asleep(edward) -> (diurnal(edward) | diurnal(elaine)) & (nocturnal(edward)).
+
+
+	%9. "the princess believed that her parents were of different types. Twelve hours later, she changed her state, and she then believed that her father was diurnal and her mother was nocturnal."
+	nocturnal(princess1) & asleep(princess1) -> (nocturnal(queen) & diurnal(king)) | (nocturnal(king) & diurnal(queen)).
+	diurnal(princess1) & awake(princess1) -> (nocturnal(queen) & diurnal(king)) | (nocturnal(king) & diurnal(queen)).
+	nocturnal(princess1) & awake(princess1) -> (nocturnal(queen) & nocturnal(king)) | (diurnal(king) & diurnal(queen)).
+	diurnal(princess1) & asleep(princess1) -> (nocturnal(queen) & nocturnal(king)) | (diurnal(king) & diurnal(queen)).
+
+	nocturnal(princess2) & asleep(princess2) -> diurnal(king) & nocturnal(queen).
+	diurnal(princess2) & awake(princess2) -> diurnal(king) & nocturnal(queen).
+	nocturnal(princess2) & awake(princess2) -> nocturnal(king) | diurnal(queen).
+	diurnal(princess2) & asleep(princess2) -> nocturnal(king) | diurnal(queen).
+
+	(nocturnal(princess1) & asleep(princess1)) | (nocturnal(princess2) & asleep(princess2)) | (diurnal(princess1) & awake(princess1)) | (diurnal(princess2) & awake(princess2)).
+
+	(nocturnal(princess1) & awake(princess1)) | (nocturnal(princess2) & awake(princess2)) | (diurnal(princess1) & asleep(princess1)) | (diurnal(princess2) & asleep(princess2)).
+
+	(asleep(princess1) & awake(princess2)) | (asleep(princess2) & awake(princess1)).
+
+end_of_list.
+
+formulas(goals).
+	%1. rasp corect: awake e true; the type cannot be determined
+	%diurnal(i1).
+	%nocturnal(i1).
+	%awake(i1).
+	%asleep(i1).
+
+	%2. rasp corect: he is nocturnal; whether he is asleep or not cannot be determined
+	%diurnal(i2).
+	%nocturnal(i2).
+	%awake(i2).
+	%asleep(i2).
+
+	%4. rasp. corect: asleep & nocturnal
+	%diurnal(i3).
+	%nocturnal(i3).
+	%awake(i3).
+	%asleep(i3).
+
+	%5. rasp. corect: awake and nocturnal
+	%diurnal(i4).
+	%nocturnal(i4).
+	%awake(i4).
+	%asleep(i4).
+
+	%6. both nocturnal/both diurnal; mr Kulp asleep, mrs Kulp awake
+	%diurnal(mr_kulp).
+	%diurnal(mrs_kulp).
+
+	%nocturnal(mr_kulp).
+	%nocturnal(mrs_kulp).
+
+	%awake(mr_kulp).
+	%awake(mrs_kulp).
+
+	%asleep(mr_kulp).
+	%asleep(mrs_kulp).
+
+	%7. both asleep/both awake; 
+	%diurnal(mr_byron).
+	%diurnal(mrs_byron).
+
+	%nocturnal(mr_byron).
+	%nocturnal(mrs_byron).
+
+	%awake(mr_byron).
+	%awake(mrs_byron).
+
+	%asleep(mr_byron).
+	%asleep(mrs_byron).
+
+	%8. Edward nocturnal and awake; Elaine diurnal
+	%nocturnal(edward).
+	%diurnal(edward).
+	%awake(edward).
+	%asleep(edward).
+
+	%diurnal(elaine).
+	%nocturnal(elaine).
+
+	%9. king-nocturnal; queen-diurnal
+	%nocturnal(king).
+	%diurnal(king).
+	
+	%nocturnal(queen).
+	%diurnal(queen).
+end_of_list.

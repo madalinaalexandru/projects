@@ -1,0 +1,107 @@
+assign(domain_size, 18).
+
+list(distinct).
+	[a, b, c, a1, b1, c1, a2, b2, c2, a3, b3, c3, a4, b4, c4, a5, b5, c5].
+end_of_list.
+
+formulas(assumptions).	
+	knave(x) -> -knight(x) & -spy(x).
+	knight(x) -> -knave(x) & -spy(x).
+  	spy(x) -> -knight(x) & -knave(x).
+	
+	% a, b and c must be a knave, a knight or a spy each.
+	knave(x) | knight(x) | spy(x).
+
+	% 42. Enter the first spy 
+	% a, b and c must be different
+	(knave(a) & knight(b) & spy(c)) | (knave(a) & spy(b) & knight(c)) | (knight(a) & knave(b) & spy(c)) | (knight(a) & spy(b) & knave(c)) | (spy(a) & knight(b) & knave(c)) | (spy(a) & knave(b) & knight(c)). 
+
+	% "A claimed that C was a knave"
+	knight(a) -> knave(c).
+	knave(a) -> knight(c) | spy(c).
+	spy(a) -> knave(c) | knight(c) | spy(c).
+	
+	% "B claimed that A was a knight"
+	knight(b) -> knight(a).
+	knave(b) -> knave(a) | spy(a).
+	spy(b) -> knight(a) | knave(a) | spy(a).
+
+	% "C replied, 'I am the spy.'"
+	spy(c) | knave(c).
+
+	% 45. The case of the foxy spy
+
+	% a1, b1 and c1 must be different
+	(knave(a1) & knight(b1) & spy(c1)) | (knave(a1) & spy(b1) & knight(c1)) | (knight(a1) & knave(b1) & spy(c1)) | (knight(a1) & spy(b1) & knave(c1)) | (spy(a1) & knight(b1) & knave(c1)) | (spy(a1) & knave(b1) & knight(c1)). 
+
+	% "First A said, 'I am not a spy.'"
+	knight(a1) | spy(a1).
+	
+	% "Then B said, 'I am a spy.'"
+	knave(b1) | spy(b1).
+
+	% "it so happened that C was the spy"
+	spy(c1).
+
+	% 46. Who is Murdoch? 
+
+	% a2, b2 and c2 must be different
+	(knave(a2) & knight(b2) & spy(c2)) | (knave(a2) & spy(b2) & knight(c2)) | (knight(a2) & knave(b2) & spy(c2)) | (knight(a2) & spy(b2) & knave(c2)) | (spy(a2) & knight(b2) & knave(c2)) | (spy(a2) & knave(b2) & knight(c2)). 
+
+	% "A: My name is Murdoch."
+	spy(a2) | knave(a2).
+	
+	% "B:That is true." 
+	knight(b2).
+	knight(b2) -> spy(a2). 
+
+	% "C: I am Murdoch."
+	spy(c2) | knave(c2).
+
+	% 47. The return of Murdoch
+	% a3, b3 and c3 must be different
+	(knave(a3) & knight(b3) & spy(c3)) | (knave(a3) & spy(b3) & knight(c3)) | (knight(a3) & knave(b3) & spy(c3)) | (knight(a3) & spy(b3) & knave(c3)) | (spy(a3) & knight(b3) & knave(c3)) | (spy(a3) & knave(b3) & knight(c3)). 
+	
+	% "A: My name is Murdoch."
+	spy(a3) | knave(a3).
+
+	% "B: That is true."
+	knight(b3) -> spy(a3).
+	knave(b3) | spy(b3) -> knave(a3).
+
+	% "C: I am not Murdoch."
+	knight(c3) | spy(c3).
+
+	% 48. A more interesting case
+	% a4, b4 and c4 must be different
+	(knave(a4) & knight(b4) & spy(c4)) | (knave(a4) & spy(b4) & knight(c4)) | (knight(a4) & knave(b4) & spy(c4)) | (knight(a4) & spy(b4) & knave(c4)) | (spy(a4) & knight(b4) & knave(c4)) | (spy(a4) & knave(b4) & knight(c4)). 
+
+	% "First A accused B of being the spy;"
+	knight(a4) -> spy(b4).
+	knave(a4) -> knight(b4).
+	spy(a4) -> knight(b4) | knave(b4).
+
+	% "then B accused C of being the spy;"
+	knight(b4) -> spy(c4).
+	knave(b4) -> knight(c4).
+	spy(b4) -> knight(c4) | knave(c4).
+
+	% "and then C pointed to one of the other two defendants and said, 'He is really the spy!'"
+	knight(c4) -> spy(a4) | spy(b4).
+	knave(c4) -> knight(a4) | knight(b4).
+	spy(c4).
+
+	% 49. A still more interesting case
+	% a5, b5 and c5 must be different
+	(knave(a5) & knight(b5) & spy(c5)) | (knave(a5) & spy(b5) & knight(c5)) | (knight(a5) & knave(b5) & spy(c5)) | (knight(a5) & spy(b5) & knave(c5)) | (spy(a5) & knight(b5) & knave(c5)) | (spy(a5) & knave(b5) & knight(c5)).
+
+	% "A said, 'C is not the spy.' The judge replied, 'I already knew that. And now I know who the spy is!'"
+	knight(c5) | knave(c5).
+	-spy(c5).
+	knight(a5) | spy(a5).
+	-knave(a5).
+	% 1 case left:
+	((knave(c5) & spy(a5) & knight(b5))).
+
+end_of_list.
+	

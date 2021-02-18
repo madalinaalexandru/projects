@@ -1,0 +1,99 @@
+% constants: catterpillar, lizard, cook, cat, fish_footman, frog_footman, king_of_diamonds, queen_of_diamonds, hatter, hare, dormouse, lobster, mock_turtle, gryphon, king_of_spades, queen_of_spades, king_of_clubs, queen_of_clubs, queen_of_hearts, king_of_hearts, dodo, lory, eaglet, one, two, three, four, five, six, seven, knave_of_hearts
+% predicate mad(x)  : x is mad
+% predicate sane(x) : x is sane
+
+assign(domain_size, 31).
+
+list(distinct).      % Objects in this list are distinct.
+  [catterpillar, lizard, cook, cat, fish_footman, frog_footman, king_of_diamonds, queen_of_diamonds, hatter, hare, dormouse, lobster, mock_turtle, gryphon, king_of_spades, queen_of_spades, king_of_clubs, queen_of_clubs, queen_of_hearts, king_of_hearts, dodo, lory, eaglet, knave_of_hearts, one, two, three, four, five, six, seven].
+end_of_list.
+
+formulas(assumptions).
+	% Everyone must be either mad or sane.
+	sane(x) | mad(x).
+
+	% If sane, they cannot be mad./If mad, they cannot be sane.
+	sane(x) <-> -mad(x).
+	
+	% 14. The catterpillar and the lizard: "The Caterpillar believes that both of them are mad."
+	sane(catterpillar) -> mad(catterpillar) & mad(lizard).
+	mad(catterpillar)  -> sane(catterpillar) | sane(lizard).
+
+	% 15. The cook and the cat: "The Cook believes that at least one of the two is mad."
+	sane(cook) -> mad(cat).
+	mad(cook) -> sane(cook) & sane(cat).
+
+ 	% 16. The fish-footman and the frog-footman: "Well, the Fish-Footman believes that he and the Frog-Footman are alike—in other words that they are either both sane or both mad."
+	sane(fish_footman) -> (sane(fish_footman) & sane(frog_footman)) | (mad(fish_footman) & mad(frog_footman)).
+	mad(fish_footman) -> (mad(fish_footman) | mad(frog_footman)) & (sane(fish_footman) | sane(frog_footman)).
+
+	% 17. The king and queen of diamonds: "'Is your poor dear wife really mad?' I asked sympathetically.
+                                        %'She believes she is,' replied the King."
+	mad(king_of_diamonds) -> sane(queen_of_diamonds) | mad(queen_of_diamonds).
+	sane(king_of_diamonds) -> -sane(queen_of_diamonds) & -mad(queen_of_diamonds).
+
+	% 18. What about these three?: "the Hatter once expressed the belief that the March Hare does not believe that all three of them are sane. Also, the Dormouse believes that the March Hare is sane."
+	mad(hatter) -> mad(hare).
+	sane(hatter) -> sane(hare).
+	
+	sane(hare) -> mad(hatter) | mad(dormouse).
+	mad(hare) -> (mad(hare) & mad(hatter) & mad(dormouse)).
+
+	sane(dormouse) -> sane(hare).
+	mad(dormouse) -> mad(hare).
+
+	% 19. And these three?: "the Lobster once expressed the belief that the Gryphon believes that exactly one of the three is sane. The Mock Turtle believes that the Gryphon is sane."
+	sane(lobster) -> sane(gryphon).
+	mad(lobster) -> sane(gryphon).
+
+	(sane(gryphon) & mad(lobster) & mad(mock_turtle)) | (mad(gryphon) & sane(lobster) & mad(mock_turtle)) | (mad(gryphon) & mad(lobster) & sane(mock_turtle)) -> sane(lobster).
+	(mad(gryphon) & mad(lobster) & mad(mock_turtle)) | (sane(gryphon) & sane(lobster) & sane(mock_turtle)) | (mad(gryphon) & sane(lobster) & sane(mock_turtle)) | (sane(gryphon) & mad(lobster) & sane(mock_turtle)) | (sane(gryphon) & sane(lobster) & mad(mock_turtle)) -> mad(lobster).
+
+	sane(mock_turtle) -> sane(gryphon).
+	mad(mock_turtle) -> mad(gryphon).
+
+	%20. And now, what about these two?: "the Queen believes that the King believes that she is mad."
+	sane(queen_of_spades) -> mad(king_of_spades).
+	mad(queen_of_spades) -> mad(king_of_spades).
+
+	sane(king_of_spades) -> mad(queen_of_spades).
+
+	%21. The king and queen of clubs: "the King of Clubs believes that the Queen of Clubs believes that the King of Clubs believes that the Queen of Clubs is mad"
+	mad(queen_of_clubs) -> mad(king_of_clubs).
+	sane(queen_of_clubs) -> mad(king_of_clubs).
+
+	mad(king_of_clubs) -> sane(queen_of_clubs).
+
+	%22. And now, what about the queen of hearts?: "The Queen believes that the King believes that the Queen believes that the King believes that she is mad. The question is, Is the Queen of Hearts mad or sane?"
+	sane(king_of_hearts) | mad(king_of_hearts) -> mad(queen_of_hearts).
+
+	%23. The dodo, the lory, and the eaglet: "The Dodo believes that the Lory believes that the Eaglet is mad. The Lory believes that the Dodo is mad, and the Eaglet believes that the Dodo is sane."
+
+	mad(eaglet) -> sane(dodo) & sane(lory).
+	sane(eaglet) -> sane(dodo) & mad(lory).
+
+	sane(lory) -> mad(dodo).
+	mad(lory) -> sane(dodo).
+	
+	sane(eaglet) -> sane(dodo).
+	mad(eaglet) -> mad(dodo).	
+
+	%24. The knave of hearts: "Three believes that One is mad. Four believes that Three and Two are not both mad. Five believes that One and Four are either both mad or both sane. Six believes that One and Two are both sane. Seven believes that Five is mad. As for the Knave of Hearts, he believes that Six and Seven are not both mad."
+	sane(three) -> mad(one) & mad(four). % am adaugat partea de four din cauza faptului ca ar fi rezultat prea multe modele si am restrans numarul acestora
+	mad(three) -> sane(one) & sane(four).
+
+	sane(four) -> sane(three) | sane(two).
+	mad(four) -> (mad(three) & mad(two)).
+
+	sane(five) -> (mad(one) & mad(four)) | (sane(one) & sane(four)).
+	mad(five) -> (sane(one) & mad(four)) | (mad(one) & sane(four)).
+
+	sane(six) -> sane(one) & sane(two).
+	mad(six) -> (sane(one) & mad(two)) | (mad(one) & mad(two)) | (mad(one) & sane(two)).
+
+	sane(seven) -> mad(five).
+	mad(seven) -> sane(five).
+
+	sane(knave_of_hearts) -> sane(six) | sane(seven). 
+	mad(knave_of_hearts) -> mad(six) & mad(seven).
+end_of_list.
