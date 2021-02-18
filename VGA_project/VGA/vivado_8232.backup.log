@@ -1,0 +1,23 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Wed Feb 10 13:52:21 2021
+# Process ID: 8232
+# Current directory: E:/faculta/an3/SSC/VGA
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent6636 E:\faculta\an3\SSC\VGA\VGA.xpr
+# Log file: E:/faculta/an3/SSC/VGA/vivado.log
+# Journal file: E:/faculta/an3/SSC/VGA\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project E:/faculta/an3/SSC/VGA/VGA.xpr
+WARNING: [filemgmt 56-3] Default IP Output Path : Could not find the directory 'E:/faculta/an3/SSC/VGA/VGA.gen/sources_1'.
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'E:/Vivado/2020.2/data/ip'.
+open_project: Time (s): cpu = 00:00:19 ; elapsed = 00:00:08 . Memory (MB): peak = 1015.262 ; gain = 0.000
+update_compile_order -fileset sources_1
+exit
+INFO: [Common 17-206] Exiting Vivado at Wed Feb 10 15:57:50 2021...

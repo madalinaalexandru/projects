@@ -1,0 +1,8 @@
+0.7
+2020.2
+Nov 18 2020
+09:47:47
+E:/faculta/an3/SSC/VGA/VGA.srcs/sim_1/new/VGA_sim.vhd,1613065661,vhdl,,,,vga_sim,,,,,,,,
+E:/faculta/an3/SSC/VGA/VGA.srcs/sources_1/new/Clk_Div.vhd,1612956965,vhdl,E:/faculta/an3/SSC/VGA/VGA.srcs/sources_1/new/Top.vhd,,,clk_div,,,,,,,,
+E:/faculta/an3/SSC/VGA/VGA.srcs/sources_1/new/Top.vhd,1613367813,vhdl,E:/faculta/an3/SSC/VGA/VGA.srcs/sim_1/new/VGA_sim.vhd,,,top,,,,,,,,
+E:/faculta/an3/SSC/VGA/VGA.srcs/sources_1/new/VGA_controller.vhd,1613367679,vhdl,E:/faculta/an3/SSC/VGA/VGA.srcs/sources_1/new/Top.vhd,,,vga_controller,,,,,,,,

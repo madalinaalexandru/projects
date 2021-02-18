@@ -1,0 +1,39 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity Top is
+    Port ( Clk   : in std_logic;
+           Rst   : in std_logic;
+           R     : in std_logic_vector(3 downto 0);
+           G     : in std_logic_vector(3 downto 0);
+           B     : in std_logic_vector(3 downto 0);
+           HSync : out std_logic;
+           VSync : out std_logic;
+           Red   : out std_logic_vector (3 downto 0);
+           Green : out std_logic_vector (3 downto 0);
+           Blue  : out std_logic_vector (3 downto 0) );
+           
+end Top;
+
+architecture Behavioral of Top is
+
+signal Clk_Gen : std_logic;
+
+begin
+
+ClockDiv: entity WORK.Clk_Div port map(Clk     => Clk,
+                                       Rst     => Rst,
+                                       Clk25Hz => Clk_Gen);
+
+VGA: entity WORK.VGA_Controller port map(Gen_Clk => Clk_Gen,
+                                         Rst     => Rst,
+                                         R       => R,
+                                         G       => G,
+                                         B       => B,
+                                         HSync  => Hsync, 
+                                         VSync  => VSync,
+                                         Red     => Red,
+                                         Green   => Green,
+                                         Blue    => Blue);
+
+end Behavioral;
