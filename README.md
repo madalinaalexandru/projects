@@ -1,2 +1,2 @@
 # projects
-Uni projects
+University projects
